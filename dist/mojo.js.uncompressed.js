@@ -24,7 +24,7 @@
  */
 
 var mojo = {
-  version: "1.1.4"
+  Version: '1.1.4'
 };
 
 /*
@@ -761,14 +761,9 @@ dojo.declare("mojo.controller.Controller", null,
 				}
 			};
 
-			var lowercasedSrcFunc = srcFunc.toLowerCase();
-			if((lowercasedSrcFunc == 'onmouseleave' || lowercasedSrcFunc == 'onmouseenter') && MooTools && Element.Events.mouseleave && Element.Events.mouseenter) {
-			  $(srcObj).addEvent(srcFunc.replace('on',''), eventFunc);
-			} else {
-			  var handle = dojo.connect(srcObj, srcFunc, eventFunc);
-			  // store connection handle needed disconnect event handler
-			  this._connectHandles.push(handle);
-			}
+			var handle = dojo.connect(srcObj, srcFunc, eventFunc);
+			// store connection handle needed disconnect event handler
+			this._connectHandles.push(handle);
 			srcObj.mojoObservers[srcFunc.toLowerCase()].push(eventFunc);
 		}
 	},
