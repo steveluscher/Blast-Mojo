@@ -24,7 +24,7 @@
  */
 
 var mojo = {
-  version: "1.1.4"
+  Version: '1.1.4'
 };
 
 /*
@@ -761,14 +761,9 @@ dojo.declare("mojo.controller.Controller", null,
 				}
 			};
 
-			var lowercasedSrcFunc = srcFunc.toLowerCase();
-			if((lowercasedSrcFunc == 'onmouseleave' || lowercasedSrcFunc == 'onmouseenter') && MooTools && Element.Events.mouseleave && Element.Events.mouseenter) {
-			  $(srcObj).addEvent(srcFunc.replace('on',''), eventFunc);
-			} else {
-			  var handle = dojo.connect(srcObj, srcFunc, eventFunc);
-			  // store connection handle needed disconnect event handler
-			  this._connectHandles.push(handle);
-			}
+			var handle = dojo.connect(srcObj, srcFunc, eventFunc);
+			// store connection handle needed disconnect event handler
+			this._connectHandles.push(handle);
 			srcObj.mojoObservers[srcFunc.toLowerCase()].push(eventFunc);
 		}
 	},
@@ -1919,8 +1914,6 @@ mojo.helper.Inflector.getInstance = function() {
 		(end)
 */
 dojo.provide("mojo.helper.Validation");
-dojo.require("dojox.validate");
-dojo.require("dojox.validate.web");
 
 var __mojoHelperValidation = null;
 dojo.declare("mojo.helper.Validation", null,
@@ -1987,6 +1980,8 @@ dojo.declare("mojo.helper.Validation", null,
 		if (!dojo.isString(value))
 			throw new Error('ERROR mojo.helper.Validation.isEmailAddress - value parameter must be a non-empty string');
 		value = value.replace(/^\s+|\s+$/g,""); //trim string value
+		dojo.require("dojox.validate");
+		dojo.require("dojox.validate.web");
 		if (!dojox.validate.isEmailAddress(value, {}) || value.match(/[^\w-_@\.]/gi)) return false;
 		return true;
 	},
@@ -2007,6 +2002,8 @@ dojo.declare("mojo.helper.Validation", null,
 		if (!dojo.isString(value))
 			throw new Error('ERROR mojo.helper.Validation.isEmailAddressList - value parameter must be a non-empty string');
 
+		dojo.require("dojox.validate");
+		dojo.require("dojox.validate.web");
 		if (!dojox.validate.isEmailAddressList(value, {})) return false;
 		return true;
 	},
@@ -2027,6 +2024,8 @@ dojo.declare("mojo.helper.Validation", null,
 		if (!dojo.isString(value))
 			throw new Error('ERROR mojo.helper.Validation.isUrl - value parameter must be a non-empty string');
 
+		dojo.require("dojox.validate");
+		dojo.require("dojox.validate.web");
 		return dojox.validate.isUrl(value, {allowLocal: true});
 	},
 	/*
