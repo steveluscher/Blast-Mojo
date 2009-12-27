@@ -9,8 +9,7 @@
 		dojo.require("mojo.command.Behavior");
 
 		dojo.declare("sample.behavior.ClearFormBehavior", mojo.command.Behavior, 
-		function() {
-		},{
+		{
 			execute: function(requestObj) {
 				var inputs = mojo.query("input", this.getRequest().getContextElement());
 				for (var i = 0, len = inputs.length; i < len; i++) {

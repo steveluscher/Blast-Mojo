@@ -11,8 +11,7 @@
 		dojo.require("sample.service.Locator");
 
 		dojo.declare("sample.command.LoadHtmlCommand", mojo.command.Command, 
-		function() {
-		},{
+		{
 			execute: function(requestObj) {
 				// invoke a service call to get some Html
 				var locator = sample.service.Locator.getInstance();

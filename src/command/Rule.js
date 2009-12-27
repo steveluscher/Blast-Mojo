@@ -9,8 +9,7 @@
 		dojo.require("mojo.command.Rule");
 
 		dojo.declare("sample.rule.MinimumAgeRule", mojo.command.Rule, 
-		function() {
-		},{
+		{
 			condition: function(requestObj) {
 				var minimumAge = 18;
 				if (this.getRequest().getParams().age >= minimumAge) {
