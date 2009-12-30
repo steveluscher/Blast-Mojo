@@ -10,7 +10,7 @@
 		dojo.require("mojo.service.Service");
 
 		dojo.declare("sample.service.Locator", mojo.service.Locator,
-		function() {}, {
+		{
 			addServices: function() {
 		        this.addService(new mojo.service.Service("getRSS", "/json/rssFeed", {format: 'json', cache: true}));
 		        this.addService(new mojo.service.Service("getProfile", "/ json/members/${memberId}/profile", {format: 'json', cache:false }));

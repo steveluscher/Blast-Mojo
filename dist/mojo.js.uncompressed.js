@@ -37,8 +37,7 @@ var mojo = {
 		dojo.provide("sample.behavior.ClearFormBehavior");
 
 		dojo.declare("sample.behavior.ClearFormBehavior", mojo.command.Behavior,
-		function() {
-		},{
+		{
 			execute: function(requestObj) {
 				var inputs = mojo.query("input", this.getRequest().getContextElement());
 				for (var i = 0, len = inputs.length; i < len; i++) {
@@ -142,8 +141,7 @@ dojo.declare("mojo.command.Behavior", null,
 				dojo.require("sample.service.Locator");
 
 		dojo.declare("sample.command.LoadHtmlCommand", mojo.command.Command,
-		function() {
-		},{
+		{
 			execute: function(requestObj) {
 				// invoke a service call to get some Html
 				var locator = sample.service.Locator.getInstance();
@@ -268,8 +266,7 @@ dojo.declare("mojo.command.Command", null,
 		dojo.provide("sample.rule.MinimumAgeRule");
 
 		dojo.declare("sample.rule.MinimumAgeRule", mojo.command.Rule,
-		function() {
-		},{
+		{
 			condition: function(requestObj) {
 				var minimumAge = 18;
 				if (this.getRequest().getParams().age >= minimumAge) {
@@ -1914,8 +1911,6 @@ mojo.helper.Inflector.getInstance = function() {
 		(end)
 */
 dojo.provide("mojo.helper.Validation");
-dojo.require("dojox.validate");
-dojo.require("dojox.validate.web");
 
 var __mojoHelperValidation = null;
 dojo.declare("mojo.helper.Validation", null,
@@ -1982,6 +1977,8 @@ dojo.declare("mojo.helper.Validation", null,
 		if (!dojo.isString(value))
 			throw new Error('ERROR mojo.helper.Validation.isEmailAddress - value parameter must be a non-empty string');
 		value = value.replace(/^\s+|\s+$/g,""); //trim string value
+		dojo.require("dojox.validate");
+		dojo.require("dojox.validate.web");
 		if (!dojox.validate.isEmailAddress(value, {}) || value.match(/[^\w-_@\.]/gi)) return false;
 		return true;
 	},
@@ -2002,6 +1999,8 @@ dojo.declare("mojo.helper.Validation", null,
 		if (!dojo.isString(value))
 			throw new Error('ERROR mojo.helper.Validation.isEmailAddressList - value parameter must be a non-empty string');
 
+		dojo.require("dojox.validate");
+		dojo.require("dojox.validate.web");
 		if (!dojox.validate.isEmailAddressList(value, {})) return false;
 		return true;
 	},
@@ -2022,6 +2021,8 @@ dojo.declare("mojo.helper.Validation", null,
 		if (!dojo.isString(value))
 			throw new Error('ERROR mojo.helper.Validation.isUrl - value parameter must be a non-empty string');
 
+		dojo.require("dojox.validate");
+		dojo.require("dojox.validate.web");
 		return dojox.validate.isUrl(value, {allowLocal: true});
 	},
 	/*
@@ -3701,7 +3702,7 @@ mojo.queryMatch = function(elementObj, cssSelectors, rootObj, checkParents) {
 		dojo.provide("sample.service.Locator");
 
 		dojo.declare("sample.service.Locator", mojo.service.Locator,
-		function() {}, {
+		{
 			addServices: function() {
 		        this.addService(new mojo.service.Service("getRSS", "/json/rssFeed", {format: 'json', cache: true}));
 		        this.addService(new mojo.service.Service("getProfile", "/ json/members/${memberId}/profile", {format: 'json', cache:false }));
