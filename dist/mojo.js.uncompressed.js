@@ -28,6 +28,40 @@ var mojo = {
 };
 
 /*
+	Class: mojo
+	Note: These functions reside within the mojo.* namespace.
+*/
+
+dojo.provide("mojo.evaluateClassPath");
+/*
+	Function: evaluateClassPath
+	
+	Returns the variable denoted by a dot-separated classpath
+	
+	Parameters:
+		classPath - {string}
+	
+	Returns:
+		{Mixed} variable
+
+	Example:
+		(start code)
+		// instantiate an object by classpath without using eval
+		var myObjectClassPath = 'stdlib.controller.TemplateController';
+    var myObjectInstance = new mojo.evaluateClassPath(myObjectClassPath)();
+		(end)
+*/
+mojo.evaluateClassPath = function(classPath) {
+	var classPathParts = classPath.split('.');
+	
+	var variable = window;
+	for(var len=classPathParts.length, i=0; i < len; i++) {
+	  if(variable) variable = variable[classPathParts[i]];
+	}
+	return variable;
+};
+
+/*
 	Class: Behavior
 
 	An abstract class used in implementing Mojo Behaviors. A Behavior is an object that encapsulates functionality for controlling and manipulating UI interaction/reaction.
@@ -538,7 +572,8 @@ dojo.declare("mojo.controller.Controller", null,
 		return null;
 	},
 	_getBaseProperty: function(propertyName) {
-		var superclass = eval(this.declaredClass + ".superclass");
+		var self = mojo.evaluateClassPath(this.declaredClass);
+		var superclass = self.superclass;
 		if (superclass.declaredClass != "mojo.controller.Controller" && superclass[propertyName]) {
 			return superclass[propertyName];
 		}
@@ -857,8 +892,9 @@ dojo.declare("mojo.controller.Controller", null,
 		var addFunc = function(cmdName, cmdObjPath, thisObj) {
 			// import the command
 			dojo.require(cmdObjPath);
+			var commandObject = mojo.evaluateClassPath(cmdObjPath);
 			// instantiate command
-			var cmdObj = eval("new " + cmdObjPath + "()");
+			var cmdObj = new commandObject();
 			if( (cmdObj instanceof mojo.command.Command) || (cmdObj instanceof mojo.command.Rule) || (cmdObj instanceof mojo.command.Behavior) ) {
 				thisObj._commands[cmdName].push(cmdObj);
 			} else {
@@ -1312,17 +1348,18 @@ dojo.declare("mojo.controller.Map", null,
 
 		// import the controller
 		dojo.require(controllerName);
-		if (contextElementObj) {
+		var controllerObject = mojo.evaluateClassPath(controllerName);
+		if (contextElementObj) {		
 			if (!contextElementObj.mojoControllers) {
 				contextElementObj.mojoControllers = {};
 			}
 			if (!contextElementObj.mojoControllers[controllerName]) { // store controller in context object
-				contextElementObj.mojoControllers[controllerName] = eval("new " + controllerName + "(contextElementObj, controllerParams)");
+				contextElementObj.mojoControllers[controllerName] = new controllerObject(contextElementObj, controllerParams);
 				if (!(contextElementObj.mojoControllers[controllerName] instanceof mojo.controller.Controller))
 				  throw new Error('ERROR mojo.controller.Map.mapController - "'+controllerName+'" must be an instance of mojo.controller.Controller');
 			}
 		} else if (!this._controllers[controllerName]) { // store page-level controller in controller.Map
-			this._controllers[controllerName] = eval("new " + controllerName + "(null, controllerParams)");
+			this._controllers[controllerName] = new controllerObject(null, controllerParams);
 			if (!(this._controllers[controllerName] instanceof mojo.controller.Controller))
 			  throw new Error('ERROR mojo.controller.Map.mapController - "'+controllerName+'" must be an instance of mojo.controller.Controller');
 		}

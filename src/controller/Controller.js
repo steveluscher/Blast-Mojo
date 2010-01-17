@@ -172,7 +172,8 @@ dojo.declare("mojo.controller.Controller", null,
 		return null;
 	},
 	_getBaseProperty: function(propertyName) {
-		var superclass = eval(this.declaredClass + ".superclass");
+		var self = mojo.evaluateClassPath(this.declaredClass);
+		var superclass = self.superclass;
 		if (superclass.declaredClass != "mojo.controller.Controller" && superclass[propertyName]) {
 			return superclass[propertyName];
 		}
@@ -491,8 +492,9 @@ dojo.declare("mojo.controller.Controller", null,
 		var addFunc = function(cmdName, cmdObjPath, thisObj) {
 			// import the command
 			dojo.require(cmdObjPath);
+			var commandObject = mojo.evaluateClassPath(cmdObjPath);
 			// instantiate command
-			var cmdObj = eval("new " + cmdObjPath + "()");
+			var cmdObj = new commandObject();
 			if( (cmdObj instanceof mojo.command.Command) || (cmdObj instanceof mojo.command.Rule) || (cmdObj instanceof mojo.command.Behavior) ) {
 				thisObj._commands[cmdName].push(cmdObj);
 			} else {

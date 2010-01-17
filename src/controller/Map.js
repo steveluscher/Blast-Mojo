@@ -203,17 +203,18 @@ dojo.declare("mojo.controller.Map", null,
 
 		// import the controller
 		dojo.require(controllerName);
+		var controllerObject = mojo.evaluateClassPath(controllerName);
 		if (contextElementObj) {		
 			if (!contextElementObj.mojoControllers) {
 				contextElementObj.mojoControllers = {};
 			}
 			if (!contextElementObj.mojoControllers[controllerName]) { // store controller in context object
-				contextElementObj.mojoControllers[controllerName] = eval("new " + controllerName + "(contextElementObj, controllerParams)");
+				contextElementObj.mojoControllers[controllerName] = new controllerObject(contextElementObj, controllerParams);
 				if (!(contextElementObj.mojoControllers[controllerName] instanceof mojo.controller.Controller))
 				  throw new Error('ERROR mojo.controller.Map.mapController - "'+controllerName+'" must be an instance of mojo.controller.Controller');
 			}
 		} else if (!this._controllers[controllerName]) { // store page-level controller in controller.Map
-			this._controllers[controllerName] = eval("new " + controllerName + "(null, controllerParams)");
+			this._controllers[controllerName] = new controllerObject(null, controllerParams);
 			if (!(this._controllers[controllerName] instanceof mojo.controller.Controller))
 			  throw new Error('ERROR mojo.controller.Map.mapController - "'+controllerName+'" must be an instance of mojo.controller.Controller');
 		}
