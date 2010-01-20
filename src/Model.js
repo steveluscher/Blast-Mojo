@@ -110,12 +110,13 @@ mojo.Model.get = function(key) {
 	var tmp = __mojoModel[key];
 		
 	if (typeof tmp == "undefined") {
-		tmp = null;
-	}
+	  if (dojo.config && dojo.config.isDebug) {
+  		console.debug("WARNING mojo.Model - No entry found for \"" + key + "\" key");
+  	}
 
-	if (dojo.config && dojo.config.isDebug) {
-		console.debug("WARNING mojo.Model - No entry found for \"" + key + "\" key");
-	}
+	  tmp = null;
+  }
+  
 	return tmp;
 };
 

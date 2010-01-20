@@ -3282,16 +3282,17 @@ mojo.Model.get = function(key) {
 	  throw new Error('ERROR mojo.Model.get - key parameter is required');
 	if(!dojo.isString(key) || key == '')
 	  throw new Error('ERROR mojo.Model.get - key parameter must be a non-empty string');
-
+	
 	var tmp = __mojoModel[key];
-
+		
 	if (typeof tmp == "undefined") {
-		tmp = null;
-	}
+	  if (dojo.config && dojo.config.isDebug) {
+  		console.debug("WARNING mojo.Model - No entry found for \"" + key + "\" key");
+  	}
 
-	if (dojo.config && dojo.config.isDebug) {
-		console.debug("WARNING mojo.Model - No entry found for \"" + key + "\" key");
-	}
+	  tmp = null;
+  }
+  
 	return tmp;
 };
 
