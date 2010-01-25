@@ -69,27 +69,29 @@ dojo.declare("mojo.controller.Param", null,
 		Parameters:
 			value - {object}
 	*/
-	setValue: function(value) {
+	setValue: function(value, suppressChangeCallback) {
 		var validate = mojo.helper.Validation.getInstance();
 		var required = this.getRequired();
 		var type = this.getType();
 		// check required and type
 		if (required && !validate.isRequired(value)) {
-			throw new Error("ERROR mojo.controller.Param.setValue - value parameter is required")
+			throw new Error("ERROR mojo.controller.Param.setValue - value parameter is required");
 		}
 		// don't set to undefined
 		if (typeof value == "undefined") {
 			return;
-		} 
+		}
 		if (type && !validate.isType(value, {type: type})) {
 			throw new Error("RROR mojo.controller.Param.setValue - value parameter is invalid type");
 		}
 		if (this.getValue() != value) {
 			this._value = value;
-			this.onChange();
-			if (this._params != null && this._params["onChange"]) {
-				this._params.onChange();
-			}
+			if(!suppressChangeCallback) {
+			  this.onChange();
+			  if (this._params != null && this._params["onChange"]) {
+  				this._params.onChange();
+			  }
+		  }
 		}
 	},
 	/*
