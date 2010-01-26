@@ -62,7 +62,7 @@ dojo.declare("mojo.helper.Validation", null,
 				return (typeof value == "string" || value instanceof String);
 				break;
 			case Number:
-				return (!isNaN(A));
+				return (!isNaN(value));
 				break;
 			case Boolean:
 				return (typeof value == "boolean" || value instanceof Boolean);
