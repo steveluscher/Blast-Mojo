@@ -85,6 +85,7 @@ dojo.declare("mojo.controller.Controller", null,
 		this._contextElementObj = null;
 		if (contextElementObj) {
 			this._contextElementObj = contextElementObj;
+			mojo.controller.Map.getInstance()._mojoRefs.push(contextElementObj);
 		}
 		this._commands = new Array();
 		this._tags = new Array();
@@ -462,7 +463,7 @@ dojo.declare("mojo.controller.Controller", null,
 	/*
 		Function: addCommand
 		
-		Adds a command object to a Controller’s command registry. Commands are referenced via a reference name.
+		Adds a command object to a Controllerï¿½s command registry. Commands are referenced via a reference name.
  		A single name can be associated with multiple Commands.
 		
 		Parameters:
