@@ -1,4 +1,4 @@
-#Blast Mojo - Web Framework 
+# Blast Mojo - Javascript Web Framework 
 
 
 ## Why create another Framework?
