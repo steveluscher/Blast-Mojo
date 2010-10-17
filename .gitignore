@@ -1,2 +1,7 @@
 .DS_Store
 Thumbs.db
+dist
+.settings
+*~
+*.diff
+*.patch
