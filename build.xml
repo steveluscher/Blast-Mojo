@@ -1,0 +1,70 @@
+<project name="Blast Mojo" default="all" basedir=".">
+  <property name="PREFIX" value="." />
+  <property description="Folder for mojo and min target" name="dist" value="${PREFIX}/dist" />
+
+  <property name="compiler" value="build/yuicompressor-2.4.2.jar" />
+  <property name="BM" value="${dist}/mojo.js" />
+  <property name="BM_MIN" value="${dist}/mojo.min.js" />
+
+  <target name="all" depends="mojo,lint,min" />
+
+  <target name="mojo" description="Main mojo build, concatenates source files and replaces @VERSION">
+    <echo message="Building ${BM}" />
+    <mkdir dir="${dist}" />
+    <concat destfile="${BM}">
+      <fileset file="src/LICENSE" />
+      
+      <fileset file="src/mojo.js" />
+      <fileset file="src/query.js" />
+      <fileset file="src/css.js" />
+      <fileset file="src/animate.js" />
+      
+      <fileset file="src/command/Behavior.js" />
+      <fileset file="src/command/Command.js" />
+      <fileset file="src/command/Rule.js" />
+      
+      <fileset file="src/service/Locator.js" />
+      <fileset file="src/service/Service.js" />
+      
+      <fileset file="src/helper/Inflector.js" />
+      <fileset file="src/helper/XML.js" />
+      <fileset file="src/helper/Validation.js" />
+      
+      <fileset file="src/ModelReference.js" />
+      <fileset file="src/Model.js" />
+      <fileset file="src/History.js" />
+      
+      <fileset file="src/MessagingTopic.js" />
+      <fileset file="src/Messaging.js" />
+
+      
+      <fileset file="src/controller/Param.js" />
+      <fileset file="src/controller/Map.js" />
+      <fileset file="src/controller/Request.js" />
+      <fileset file="src/controller/Controller.js" />
+      
+    </concat>
+  
+    <echo message="${BM} built." />
+  </target>
+
+  <target name="lint" depends="mojo" description="Check jQuery against JSLint">
+    <exec executable="java">
+      <arg line="-jar build/js.jar build/jslint-check.js" />
+    </exec>
+  </target>
+
+  <target name="min" depends="mojo" description="Remove all comments and whitespace, no compression, great in combination with GZip">
+    <echo message="Building ${BM_MIN}" />
+    <java jar="${compiler}" fork="true" failonerror="true" maxmemory="256m">
+      <arg line="${BM} -o ${BM_MIN} --charset UTF-8 --preserve-semi" />
+    </java>
+    
+    <echo message="${BM_MIN} built." />
+  </target>
+
+  <target name="clean">
+    <delete dir="${dist}" />
+  </target>
+
+</project>
